@@ -1,0 +1,3 @@
+# MiniGNN
+
+*Documentation goes here.*
