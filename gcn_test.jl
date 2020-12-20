@@ -14,9 +14,9 @@ using MiniGNN: create_batch
 @load "test_data.jld" test_data
 @load "test_labels.jld" test_labels
 
-small = 1000
-train_data = train_data[1:small,:]
-train_labels = train_labels[1:small]
+#small = 1000
+#train_data = train_data[1:small,:]
+#train_labels = train_labels[1:small]
 train_labels = onehotbatch(train_labels, 0:9)
 #size Nlabels x Nsamples
 test_labels = onehotbatch(test_labels,0:9)
@@ -35,10 +35,10 @@ input = convert(Array{Float32,3},process_data(batch))
 
 p=0.5
 mat1 = MiniGNN.make_rescaled_mat(L_g[1])
-layer1 = MiniGNN.GraphConv(mat1,1=>32,25)
+layer1 = MiniGNN.GraphConv(mat1,1=>32,5)
 mp = MiniGNN.GraphMaxPool(4)
 mat2 = MiniGNN.make_rescaled_mat(L_g[3])
-layer2 = MiniGNN.GraphConv(mat2,32=>64,25)
+layer2 = MiniGNN.GraphConv(mat2,32=>64,5)
 dim_fc = Int(64*size(mat2)[1]/4)
 model = Chain(layer1 , mp, layer2, mp, MiniGNN.graphflatten, Dense(dim_fc,512, relu), Dropout(p), Dense(512,10)) 
 
@@ -48,7 +48,7 @@ loss(pred,y) = logitcrossentropy(pred,y)
 
 learner_gnn = Learner(model,SGD,loss,databunch,cbs=(AvgStatsCallback(),))
 transform = x -> convert(Array{Float32,3},process_data(x))
-fit!(learner_gnn,1,transform)
+fit!(learner_gnn,30,transform)
 
 model(input)
 #one batch
