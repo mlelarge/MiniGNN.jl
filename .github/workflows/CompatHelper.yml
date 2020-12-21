@@ -24,6 +24,6 @@ jobs:
         run: julia -e 'using CompatHelper; 
           my_registries = [Pkg.RegistrySpec(name = "MiniFastai",
                                   uuid = "d74fb2b4-b9a7-4851-9aa7-1ef1d6fc44e2",
-                                  url = "https://github.com/mlelarge/MiniFastai.jl"),
+                                  url = "https://github.com/mlelarge/MiniFastai.jl")]
                                   
           CompatHelper.main(;registries = my_registries)'
